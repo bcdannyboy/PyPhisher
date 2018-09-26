@@ -88,7 +88,7 @@ class PyPhisher():
 
     # send emails
     def Send(self):
-        smtp = smtplib.SMTP(smtpserver)
+        smtp = smtplib.SMTP(self.smtpserver, self.smtpport)
 
         if self.tls is 1:
             smtp.starttls()
