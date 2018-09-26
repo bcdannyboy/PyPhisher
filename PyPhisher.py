@@ -16,43 +16,13 @@ from email import Encoders
 from email.mime.text import MIMEText
 from email.utils import COMMASPACE, formatdate
 
-class Logger():
-    def __init__(self):
-        self.email_log = open("PyPhisher_Email_Log.txt", 'w+')
-        self.tracking_log = open("PyPhisher_Tracking_Log.txt",'w+')
-        self.error_log = open("PyPhisher_Error_Log.txt",'w+')
-        self.main_log = open("PyPhisher_Log.txt",'w+')
-
-        self.now = datetime.datetime.now()
-
-    def MainLog(self, level, message):
-        logstring = str(self.now) + "," + level + "," + message + "\n"
-        self.main_log.write(logstring)
-
-    def EmailLog(self, message):
-        self.MainLog("EMAIL", message)
-
-        logstring = str(self.now) + "," + message + "\n"
-        self.email_log.write(logstring)
-
-    def ErrorLog(self, message):
-        self.MainLog("ERROR", message)
-
-        logstring = str(self.now) + "," + message + "\n"
-        self.error_log.write(logstring)
-
-    def TrackingLog(self, message):
-        self.MainLog("TRACKING", message)
-
-        logstring = str(self.now) + "," + message + "\n"
-        self.tracking_log.write(logstring)
+import Log
 
 class PyPhisher():
     def __init__(self):
         self.version = 1.0
-        self.log = Logger()
+        self.log = Log.Logger()
         self.log.MainLog("PYPHISHER", "PyPhisher initiated.")
-
         self.trackerhost = ""
         self.tracked = 0
         self.attachment = ""
@@ -61,13 +31,12 @@ class PyPhisher():
         self.format = ""
         self.smtpserver = ""
         self.smtpport = 0
-        self.from = ""
-        self.pass = ""
+        self.epass = ""
         self.body = ""
         self.tls = 0
         self.attachmentname = ""
         self.apachelog = ""
-
+        self.efrom = ""
         self.EmailList = []
         self.TrackerIDs = []
 
@@ -118,21 +87,21 @@ class PyPhisher():
 
     # send emails
     def Send(self):
-        smtp = smtplib.SMTP((smtpserver)
+        smtp = smtplib.SMTP(smtpserver)
 
         if self.tls is 1:
             smtp.starttls()
 
-        smtp.login(self.from, self.pass)
+        smtp.login(self.efrom, self.epass)
 
         i = 0
         for addr in self.EmailList:
             msg = MIMEMultipart('alternative')
             msg['Subject'] = self.subject
-            msg['From'] = self.from
+            msg['From'] = self.efrom
             msg['To'] = addr
 
-            if self.tracked = 1:
+            if self.tracked is 1:
                 self.body = self.body + '<img src="' + self.trackerhost + '/' + self.TrackerIDs[i] + '.gif"/>'
             body = MIMEText(self.body, self.format)
 
@@ -148,7 +117,7 @@ class PyPhisher():
 
             smtp.sendmail(msg['To'], msg['From'], msg.as_string())
             self.log.EmailLog("Sent email to " + msg['From'])
-            i++
+            i = i + 1
 
         if self.tracked is 1:
             print "All emails sent. moving to tracker."
@@ -178,8 +147,8 @@ class PyPhisher():
         if tls is "y":
             self.tls = 1
 
-        self.from = raw_input("║ Enter sender email address: ")
-        self.pass = raw_input("║ Enter sender password: ")
+        self.efrom = raw_input("║ Enter sender email address: ")
+        self.epass = raw_input("║ Enter sender password: ")
         self.subject = raw_input("║ Enter Email Subject: ")
 
         print "║ What format should the email body be?"
@@ -206,14 +175,14 @@ class PyPhisher():
             with open(body, 'r') as bodyfile:
                 self.body = bodyfile.read()
         except Exception:
-            print "[ERROR] could not read body file".
+            print "[ERROR] could not read body file"
             self.log.ErrorLog("could not read body file: (" + str(body) + ")")
             self.cls()
             self.Config()
 
         attachment = raw_input("║ Does the email contain an attachment? (y/n): ")
 
-        if attachment is "y"
+        if attachment is "y":
             self.attachment = raw_input("║ Enter Attachment Path: ")
             self.attachmentname = raw_input("║ Enter Attachment Name (i.e. file.pdf): ")
 
@@ -224,6 +193,7 @@ class PyPhisher():
             self.format = "html"
             self.trackerhost = raw_input("║ Enter address of tracker host (i.e. 127.0.0.1, phishing.com, etc.): ")
             self.apachelog = raw_input("║ Enter path to apache access.log file: ")
+            self.apachewww = raw_input("║ Enter path to apache html folder (i.e. /var/www/html): ")
             self.generateTrackerIDs()
             self.generateTrackers()
 
@@ -273,17 +243,17 @@ class PyPhisher():
             self.Config()
 
         elif opt is 2:
-                pathname = raw_input("║ Enter file path: ")
+            pathname = raw_input("║ Enter file path: ")
 
-                with open(pathname) as f:
-                    lines = f.readlines()
+            with open(pathname) as f:
+                lines = f.readlines()
 
-                    for line in lines():
-                        self.EmailList.append(line)
+                for line in lines():
+                    self.EmailList.append(line)
 
-                self.log.EmailLog("Gathered list of from user.")
-                self.cls()
-                self.Config()
+            self.log.EmailLog("Gathered list of from user.")
+            self.cls()
+            self.Config()
 
         elif opt is 3:
             exit()
