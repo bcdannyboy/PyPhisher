@@ -37,6 +37,7 @@ class PyPhisher():
         self.attachmentname = ""
         self.apachelog = ""
         self.efrom = ""
+        self.apachewww = ""
         self.EmailList = []
         self.TrackerIDs = []
 
@@ -50,7 +51,7 @@ class PyPhisher():
     def generateTrackers(self):
         for ID in self.TrackerIDs:
             trackdot = "trackdot.gif"
-            shutil.copy(trackdot, "/var/www/html/" + ID + ".gif")
+            shutil.copy(trackdot, self.apachewww + ID[0] + ".gif")
 
     # generate tracker ID names
     def generateTrackerIDs(self):
