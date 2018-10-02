@@ -1,13 +1,9 @@
-# coding: utf-8
-
-import datetime
-import os
-from subprocess import call
+from optparse import OptionParser
+import smtplib
 import random
 import string
 import shutil
-import time
-import smtplib
+import datetime
 from os.path import basename
 from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
@@ -16,248 +12,326 @@ from email import Encoders
 from email.mime.text import MIMEText
 from email.utils import COMMASPACE, formatdate
 
-import Log
+class Logger():
+    def __init__(self, outputfile, logfile):
+        if outputfile is not 0:
+            self.output = open(outputfile, 'w+')
+        if logfile is not 0:
+            self.log = open(logfile, 'w+')
 
-class PyPhisher():
-    def __init__(self):
-        self.version = 1.0
-        self.log = Log.Logger()
-        self.log.MainLog("PYPHISHER", "PyPhisher initiated.")
-        self.trackerhost = ""
-        self.tracked = 0
-        self.attachment = ""
-        self.trackerwait = 0
-        self.subject = ""
-        self.format = ""
-        self.smtpserver = ""
-        self.smtpport = 0
-        self.epass = ""
-        self.body = ""
-        self.tls = 0
-        self.attachmentname = ""
-        self.apachelog = ""
-        self.efrom = ""
-        self.apachewww = ""
-        self.EmailList = []
-        self.TrackerIDs = []
+    def Log(self, message):
+        logstring = str(datetime.datetime.now()) + "," + message + "\n"
+        self.log.write(logstring)
 
-    def cls(self):
-		try:
-			call('clear' if os.name is 'posix' else 'cls')
-		except:
-			print "[Error] Unable to clear screen"
+    def Output(self, message):
+        outstring = str(datetime.datetime.now()) + "," + message + "\n"
+        self.log.write(outstring)
 
-    # copy 1x1 pixel gif and rename to ID in /var/www/html folder (apache)
-    def generateTrackers(self):
-        for ID in self.TrackerIDs:
+class Sender():
+    def __init__(self, options):
+        self.opt = options
+        self.SendMail()
+
+        self.TrackID = []
+        self.ToAddress = []
+        self.FromAddress = []
+
+        self.OutputFile = ""
+        self.LogFile = ""
+
+
+    def generateTrackers(self, amt, apachepath):
+        for i in range(0, amt):
             trackdot = "trackdot.gif"
-            shutil.copy(trackdot, self.apachewww + ID[0] + ".gif")
+            shutil.copy(trackdot, apachepath + self.generateTrackID() + ".gif")
 
-    # generate tracker ID names
-    def generateTrackerIDs(self):
-        for item in self.EmailList:
-            id = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(8))
-            self.TrackerIDs.append([id,0])
+    def generateTrackID(self):
+        id = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(8))
+        self.TrackID.append([id,0])
+        return id
 
-    def OutputTracking(self):
-        trackfile = open("PyPhisher_Tracker_Output.txt", 'w+')
-
-        for ID in self.TrackerIDs:
-            if ID[1] is 0:
-                trackfile.write(ID + ",EMAIL UNOPENED\n")
-            else:
-                trackfile.write(ID + ",TRACKER TRIGGERED\n")
-
-    # read apache logs to track email
-    def Track(Self):
+    def Track(self, logfile, tracktime):
         time = datetime.datetime.now()
 
-        while datetime.datetime.now() != (time + datetime.timedelta(self.trackerwait)):
-            logfile = open(self.apachelog, 'r')
+        hit = []
+
+        while datetime.datetime.now() != (tracktime + datetime.timedelta(self.trackerwait)):
+            logfile = open(logfile, 'r')
             logfile.seek(0,2)
             line = logfile.readline()
             if not line:
-                time.sleep(0.1) # wait 0.1 seconds
+                time.sleep(0.1)
                 continue
             else:
                 for ID in self.TrackerIDs:
-                    if ID[0] in line:
-                        ID[1] = 1
+                    if ID in line:
+                        print "ID Hit: " + ID
+                        hit.append(ID)
 
-        self.OutputTracking()
+        return hit
 
-    # send emails
-    def Send(self):
-        smtp = smtplib.SMTP(self.smtpserver, self.smtpport)
+    def SendMail(self):
+        singleto = 0
+        tofile = 0
 
-        if self.tls is 1:
-            smtp.starttls()
+        singlefrom = 0
+        fromfile = 0
 
-        smtp.login(self.efrom, self.epass)
+        email_type = 0
+        require_tls = 0
 
-        i = 0
-        for addr in self.EmailList:
-            msg = MIMEMultipart('alternative')
-            msg['Subject'] = self.subject
-            msg['From'] = self.efrom
-            msg['To'] = addr
+        additionalheaders = 0
 
-            if self.tracked is 1:
-                self.body = self.body + '<img src="' + self.trackerhost + '/' + self.TrackerIDs[i] + '.gif"/>'
-            body = MIMEText(self.body, self.format)
+        track = 0
+        attach = 0
+        log = 0
+        output = 0
+        watchlog = 0
 
-            msg.attach(body)
+        if self.opt.to_Address:
+            to_Address = self.opt.to_Address
+            singleto = 1
+        if self.opt.to_Name:
+            to_fname = self.opt.to_First
+        if self.opt.to_Last:
+            to_lname = self.opt.to_Last
+        if self.opt.to_File:
+            to_File = self.opt.to_File
 
-            if len(self.attachment) is not 0:
-                att = MIMEbase('application', "octet-stream")
-                att.set_payload(open(self.attachment,"rb").read())
-                Encoders.encode_base64(att)
+        if self.opt.from_Address:
+            from_Address = self.opt.from_Address
+            singlefrom = 1
+        if self.opt.from_First:
+            from_fname = self.opt.from_First
+        if self.opt.from_Last
+            from_lname = self.opt.from_Last
+        if self.opt.from_File:
+            from_File = self.opt.from_File
+            fromfile = 1
 
-                att.add_header('Content-Disposition', 'attachment; filename="' + self.attachmentname + '"')
-                msg.attach(att)
+        if self.opt.smtp_Server:
+            smtp_Server = self.opt.smtp_Server
+        if self.opt.smtp_Port:
+            smtp_Port = self.opt.smtp_Port
+        if self.opt.require_tls:
+            if str(self.opt.require_tls).lower() is "y":
+                require_tls = 1
+        if self.opt.smtp_Username:
+            smtp_user = self.opt.smtp_Username
+        if self.opt.smtp_Password:
+            smtp_pass = self.opt.smtp_Password
 
-            smtp.sendmail(msg['To'], msg['From'], msg.as_string())
-            self.log.EmailLog("Sent email to " + msg['From'])
-            i = i + 1
+        if self.opt.email_Type:
+            if str(self.opt.email_Type).lower() is "html":
+                email_type = 1
+        if self.opt.body_File:
+            body_File = self.opt.body_File
+        if self.opt.subject_File:
+            subject_File = self.opt.subject_File
+        if self.opt.header_File:
+            header_File = self.opt.header_File
+            additionalheaders = 1
 
-        if self.tracked is 1:
-            print "All emails sent. moving to tracker."
-            self.cls()
-            self.Track()
+        if self.opt.Track_Email:
+            track = 1
+        if self.opt.Track_Path:
+            track_Path = self.opt.track_Path
+        if self.opt.Track_Domain:
+            track_Domain = self.opt.Track_Domain
+        if self.opt.Track_Time:
+            tracktime = int(self.opt.Track_Time)
+        if self.opt.Apache_Log:
+            apache_Log = self.opt.Apache_Log
+            watchlog = 1
+
+        if self.opt.attachment_file:
+            attach_File = self.opt.attachment_file
+            attach = 1
+        if self.opt.Output_File:
+            output_File = self.opt.Output_File
+            output = 1
+        if self.opt.Log_File:
+            log_File = self.opt.Log_File
+            log = 1
+
+
+        if output is 1 and log is 1:
+            Writer = Logger(output_File, log_File)
+        elif output is 0 and log is 1:
+            Writer = Logger(0, log_File)
+        elif output is 1 and log is 0:
+            Writer = Logger(output_File, 0)
+
+        if singleto is 1:
+            self.ToAddress.append(to_Address)
         else:
-            print "All emails sent untracked. Goodbye."
-            exit()
-
-    # get config info
-    def Config(self):
-
-        self.smtpserver = raw_input("║ Enter SMTP Server address: ")
-
-        port = raw_input("║ Enter SMTP Port: ")
-
-        try:
-            self.smtpport = int(port)
-        except Exception:
-            print "[ERROR] Invalid Input: " + str(port)
-            self.log.ErrorLog("Invalid Input: (" + str(port) + ")")
-            self.cls()
-            self.Config()
-
-        tls = raw_input("║ does the the server require tls? (y/n): ")
-
-        if tls is "y":
-            self.tls = 1
-
-        self.efrom = raw_input("║ Enter sender email address: ")
-        self.epass = raw_input("║ Enter sender password: ")
-        self.subject = raw_input("║ Enter Email Subject: ")
-
-        print "║ What format should the email body be?"
-        print "║ Options: 1 = html, 2 = plaintext"
-        print "║ Note: If you would like to track emails HTML is necessary"
-        format = raw_input("║ Format: ")
-
-        try:
-            format = int(format)
-        except Exception:
-            print "[ERROR] Invalid Input: " + str(format)
-            self.log.ErrorLog("Invalid Input: (" + str(format) + ")")
-            self.cls()
-            self.Config()
-
-        if format is 1:
-            self.format = "html"
-        else:
-            self.format = "plain"
-
-        body = raw_input("║ Enter path to body file: ")
-
-        try:
-            with open(body, 'r') as bodyfile:
-                self.body = bodyfile.read()
-        except Exception:
-            print "[ERROR] could not read body file"
-            self.log.ErrorLog("could not read body file: (" + str(body) + ")")
-            self.cls()
-            self.Config()
-
-        attachment = raw_input("║ Does the email contain an attachment? (y/n): ")
-
-        if attachment is "y":
-            self.attachment = raw_input("║ Enter Attachment Path: ")
-            self.attachmentname = raw_input("║ Enter Attachment Name (i.e. file.pdf): ")
-
-        tracked = raw_input("║ Should emails be tracked? (y/n): ")
-
-        if tracked is "y":
-            self.tracked = 1
-            self.format = "html"
-            self.trackerhost = raw_input("║ Enter address of tracker host (i.e. 127.0.0.1, phishing.com, etc.): ")
-            self.apachelog = raw_input("║ Enter path to apache access.log file: ")
-            self.apachewww = raw_input("║ Enter path to apache html folder (i.e. /var/www/html): ")
-            self.generateTrackerIDs()
-            self.generateTrackers()
-
-        print "║ How long should the tracker wait before outputting final report?"
-        print "║ Input should be in minutes (i.e. 10 = 10 minutes)"
-        self.trackerwait = raw_input("║ Wait Time: ")
-
-        self.Send()
-
-    def Phisher(self):
-        print "╭────────────────────────────────────╮"
-        print "│             PyPhisher              │"
-        print "│   Version: 1.0      Daniel Bloom   │"
-        print "╞════════════════════════════════════╡"
-        print "│   How Should Emails Be Processed?  │"
-        print "│                                    │"
-        print "│ 1. Manual Enter                    │"
-        print "│ 2. Read From File                  │"
-        print "│ 3. Exit                            │"
-        print "╰────────────────────────────────────╯"
-        opt = raw_input("║ Please Enter Your Option: ")
-
-        try:
-            opt = int(opt)
-        except Exception:
-            print "[ERROR] Invalid Input: " + str(opt)
-            self.log.ErrorLog("Invalid Input: (" + str(opt) + ")")
-            self.cls()
-            self.Phisher()
-
-        if opt < 1 or opt > 3:
-            print "[ERROR] Invalid Input: " + str(opt)
-            self.log.ErrorLog("Invalid Input: (" + str(opt) + ")")
-            self.cls()
-            self.Phisher()
-
-        if opt is 1:
-            while 1:
-                emailaddr = raw_input("║ Enter email address or 'END' to finish: ")
-                if emailaddr == "END":
-                    break
-                else:
-                    self.EmailList.append(emailaddr)
-
-            self.log.EmailLog("Gathered list of from user.")
-            self.cls()
-            self.Config()
-
-        elif opt is 2:
-            pathname = raw_input("║ Enter file path: ")
-
-            with open(pathname) as f:
+            with open(to_File) as f:
                 lines = f.readlines()
 
                 for line in lines():
-                    self.EmailList.append(line)
+                    self.ToAddress.append(line)
 
-            self.log.EmailLog("Gathered list of from user.")
-            self.cls()
-            self.Config()
+        if singlefrom is 1:
+            self.FromAddress.append(from_Address)
+        else:
+            with open(from_File) as f:
+                lines = f.readlines()
 
-        elif opt is 3:
-            exit()
+                for line in lines():
+                    self.FromAddress.append(line)
 
-PP = PyPhisher()
-PP.Phisher()
+        if track is 1:
+            self.generateTrackers(len(self.ToAddress), Track_Path)
+
+        smtp = smtplib.SMTP(smtp_Server, smtp_Port)
+
+        if require_tls is 1:
+            smtp.starttls()
+
+        if log:
+            Writer.Log("Logging in to SMTP")
+        smtp.login(smtp_user, smtp_pass)
+
+        with open(body_File, 'r') as bodyfile:
+            body = bodyfile.read()
+        with optn(subject_File, 'r') as subjectfile:
+            subject = subjectfile.read()
+
+        i = 0
+        for taddr in self.ToAddress:
+            for faddr in self.FromAddress:
+                msg = MIMEMultipart('alternative')
+                msg['Subject'] = subject
+                msg['From'] = faddr
+                msg['To'] = taddr
+
+                if track is 1:
+                    if log:
+                        Writer.Log("Attaching tracking dot")
+                    body = body + '<img src="' + track_Domain + '/' + self.TrackerIDs[i] + '.gif"/>'
+
+                if email_type is 1:
+                    body = MIMEText(body,"html")
+                else:
+                    body = MIMEText(body,"plain")
+
+                if log:
+                    Writer.Log("Attaching Body")
+                msg.attach(body)
+
+                if attach is 1:
+                    att = MIMEBase('application', "octet-stream")
+                    att.set_payload(open(attach_File, "rb").read())
+                    Encoders.encode_base64(att)
+                    head, tail = os.path.split(attach_File)
+
+
+                    att.add_header('Content-Disposition', 'attachment; filename="' + tail + '"')
+                    if log:
+                        Writer.Log("Attaching File: " + tail)
+                    msg.attach(att)
+
+                if additionalheaders:
+                    with open(header_File) as f:
+                        lines = f.readlines()
+
+                        for line in lines:
+                            split = line.split(":")
+                            msg[split[0]] = split[1]
+
+                if log:
+                    Writer.Log("Sending email to: " + msg['To'] + " from: " + msg['From'])
+                smtp.sendmail(msg['To'], msg['From'], msg.as_string())
+
+                if output:
+                    Writer.Output("Sent to: " + msg['To'] + " from: " + msg['From'])
+
+            i = i + 1
+
+            hits = self.Track(tracktime)
+
+            if output:
+                for hit in hits:
+                    Writer.Output("Tracker Hit: " + hit)
+
+
+
+usage = "usage: %prog [options]"
+parser = OptionParser(usage=usage)
+
+parser.add_option("-t", "--to", dest="to_Address",
+                  help="Single address to email.", metavar="TO@EXAMPLE.COM")
+parser.add_option("--tf", "--toFirst", dest="to_First",
+                  help="First name of recipient", metavar="FIRSTNAME")
+parser.add_option("--tl", "--toLast", dest="to_Last",
+                  help="Last name of recipient", metavar="LASTNAME")
+parser.add_option("-T", "--toFile", dest="to_File",
+                  help="File of to names and email addresses", metavar="FILE")
+
+parser.add_option("-f", "--from", dest="from_Address",
+                  help="Address to send from", metavar="FROM@EXAMPLE.COM")
+parser.add_option("--ff", "--fromFirst", dest="from_First",
+                  help="First name of sender", metavar="FIRSTNAME")
+parser.add_option("--fl", "--fromLast", dest="from_Last",
+                  help="Last name of sender", metavar="LASTNAME")
+parser.add_option("-F", "--fromFile", dest="from_File",
+                  help="File of from names and addresses")
+
+parser.add_option("-s", "--smtp", dest="smtp_Server",
+                  help="SMTP Server", metavar="SMTPSERVER")
+parser.add_option("-p", "--port", dest="smtp_Port",
+                  help="SMTP Port", metavar="SMTPPORT")
+parser.add_option("-l", "--tls", dest="require_tls",
+                  help="Does the server require TLS?", metavar="Y/N")
+parser.add_option("-U", "--username", dest="smtp_Username",
+                  help="SMTP Username", metavar="USERNAME")
+parser.add_option("-P", "--password", dest="smtp_Password",
+                  help="SMTP Password", metavar="PASSWORD")
+
+parser.add_option("-x", "--type", dest="email_Type",
+                  help="Type of Email (plaintext/html)", metavar="Plain/HTML")
+parser.add_option("-b", "--body", dest="body_File",
+                  help="Body File", metavar="FILE")
+parser.add_option("-S", "--subject", dest="subject_File",
+                  help="Subject File", metavar="FILE")
+parser.add_option("-h", "--header", dest="header_File",
+                  help="Additional Email Headers", metavar="FILE")
+
+parser.add_option("-r", "--track", dest="Track_Email",
+                  help="Track the email?", metavar="Y/N")
+parser.add_option("-R", "--trackpath", dest="Track_Path",
+                  help="Path to apache publichtml file", metavar="PATH")
+parser.add_option("-d", "--trackdomain", dest="Track_Domain",
+                  help="Domain to host tracker on", metavar="EXAMPLE.COM")
+parser.add_option("-v", "--apachelog", dest="Apache_Log",
+                  help="Path to apache log file", metavar="FILE")
+parder.add_option("--tt", "--tracktime", dest="Track_Time",
+                  help="time to track apache log in minutes")
+
+parser.add_option("-a", "--attach", dest="attachment_file",
+                  help="File to attach", metavar="FILE")
+parser.add_option("-o", "--Output", dest="Output_File",
+                  help="Path to .txt output file", metavar="FILE")
+parser.add_option("-L", "--Log", dest="Log_File",
+                  help="Path to .txt log file", metavar="FILE")
+(options, args) = parser.parse_args()
+
+if str(options.Track_Email).lower() is "y" and not options.Track_Path and not options.Track_Domain:
+    print "option -t requires option -R and option -d and vice versa"
+    exit()
+
+if not options.smtp_Server or not options.smtp_Port or not options.smtp_Username or not options.smtp_Password:
+    print "SMTP information is required"
+    exit()
+
+if options.to_Address and options.to_File:
+    print "-t and -T are mutually exclusive"
+    exit()
+
+if options.from_Address and options.from_File:
+    print "-f and -F are mutually exclusive"
+    exit()
+
+
+
+Send = Sender(options)
