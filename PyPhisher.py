@@ -38,7 +38,8 @@ class Sender():
 
         self.OutputFile = ""
         self.LogFile = ""
-
+        
+        self.SendMail()
 
     def generateTrackers(self, amt, apachepath):
         for i in range(0, amt):
