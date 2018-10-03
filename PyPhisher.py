@@ -117,7 +117,7 @@ class Sender():
             smtp_Port = self.opt.smtp_Port
         if self.opt.require_tls:
             print self.opt.require_tls.lower()
-            if self.opt.require_tls.lower() is 'y':
+            if self.opt.require_tls.lower() == 'y':
                 print "require_tls is y"
                 require_tls = 1
         if self.opt.smtp_Username:
@@ -126,7 +126,7 @@ class Sender():
             smtp_pass = self.opt.smtp_Password
 
         if self.opt.email_Type:
-            if str(self.opt.email_Type).lower() is "html":
+            if str(self.opt.email_Type).lower() == "html":
                 email_type = 1
         if self.opt.body_File:
             body_File = self.opt.body_File
