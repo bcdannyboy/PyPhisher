@@ -52,7 +52,7 @@ class Sender():
         self.TrackerIDs.append(id)
         return id
 
-    def Track(self, tracktime):
+    def Track(self, logfile, tracktime):
         time = datetime.datetime.now()
 
         hit = []
@@ -254,7 +254,7 @@ class Sender():
             i = i + 1
 
             if track is 1:
-                hits = self.Track(tracktime)
+                hits = self.Track(apache_Log, tracktime)
 
             if output:
                 for hit in hits:
