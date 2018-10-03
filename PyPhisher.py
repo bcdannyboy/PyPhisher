@@ -72,7 +72,7 @@ class Sender():
         return hit
 
     def SendMail(self):
-        print self.ToAddress
+        print self.opt.require_tls
         singleto = 0
         tofile = 0
 
@@ -166,7 +166,7 @@ class Sender():
 
         if singleto is 1:
             self.ToAddress.append(to_Address)
-        else:
+        elif self.opt.to_File:
             with open(to_File) as f:
                 lines = f.readlines()
 
@@ -192,6 +192,7 @@ class Sender():
 
         if log:
             Writer.Log("Logging in to SMTP")
+
         smtp.login(smtp_user, smtp_pass)
 
         with open(body_File, 'r') as bodyfile:
