@@ -211,8 +211,8 @@ class Sender():
                 if track is 1:
                     if log:
                         Writer.Log("Attaching tracking dot")
-                    print self.TrackerIDS[i]
-                    body = body + '<img src="' + track_Domain + '/' + self.TrackerIDs[i] + '.gif"/>'
+                    print self.TrackerIDs[i]
+                    body = str(body) + '<img src="' + str(track_Domain) + '/' + str(self.TrackerIDs[i]) + '.gif"/>'
 
                 if email_type is 1:
                     body = MIMEText(body,"plain")
