@@ -4,6 +4,7 @@ import random
 import string
 import shutil
 import datetime
+import os
 from os.path import basename
 from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
@@ -72,7 +73,6 @@ class Sender():
         return hit
 
     def SendMail(self):
-        print self.opt.require_tls
         singleto = 0
         tofile = 0
 
@@ -188,10 +188,7 @@ class Sender():
         smtp = smtplib.SMTP(smtp_Server, smtp_Port)
 
         if require_tls is 1:
-            print "here!"
             smtp.starttls()
-        else:
-            print "nope!"
 
         if log:
             Writer.Log("Logging in to SMTP")
