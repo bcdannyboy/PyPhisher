@@ -39,8 +39,6 @@ class Sender():
         self.OutputFile = ""
         self.LogFile = ""
 
-        self.trackerwait = 0
-
         self.SendMail()
 
 
@@ -59,7 +57,7 @@ class Sender():
 
         hit = []
 
-        while datetime.datetime.now() != (tracktime + datetime.timedelta(self.trackerwait)):
+        while datetime.datetime.now() != datetime.timedelta(tracktime)):
             logfile = open(logfile, 'r')
             logfile.seek(0,2)
             line = logfile.readline()
@@ -144,7 +142,6 @@ class Sender():
             track_Domain = self.opt.Track_Domain
         if self.opt.Track_Time:
             tracktime = int(self.opt.Track_Time)
-            self.trackerwait = tracktime
         if self.opt.Apache_Log:
             apache_Log = self.opt.Apache_Log
             watchlog = 1
