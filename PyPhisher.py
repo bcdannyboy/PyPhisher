@@ -183,7 +183,7 @@ class Sender():
                     self.FromAddress.append(line)
 
         if track is 1:
-            self.generateTrackers(len(self.ToAddress), Track_Path)
+            self.generateTrackers(len(self.ToAddress), track_Path)
 
         smtp = smtplib.SMTP(smtp_Server, smtp_Port)
 
