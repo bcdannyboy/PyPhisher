@@ -117,7 +117,7 @@ class Sender():
             smtp_Port = self.opt.smtp_Port
         if self.opt.require_tls:
             print self.opt.require_tls.lower()
-            if self.opt.require_tls.lower() is "y":
+            if self.opt.require_tls.lower() is 'y':
                 print "require_tls is y"
                 require_tls = 1
         if self.opt.smtp_Username:
