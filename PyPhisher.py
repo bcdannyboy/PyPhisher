@@ -60,9 +60,9 @@ class Sender():
         hit = []
 
         while datetime.datetime.now() != datetime.timedelta(tracktime):
-            logfile = open(logfile, 'r')
-            logfile.seek(0,2)
-            line = logfile.readline()
+            logf = open(logfile, 'r')
+            logf.seek(0,2)
+            line = logf.readline()
             if not line:
                 time.sleep(0.1)
                 continue
@@ -71,7 +71,6 @@ class Sender():
                     if ID in line:
                         print "ID Hit: " + ID
                         hit.append(ID)
-            logfile.close()
 
         return hit
 
