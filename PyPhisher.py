@@ -246,6 +246,7 @@ class Sender():
                 if log:
                     Writer.Log("Sending email to: " + msg['To'] + " from: " + msg['From'])
 
+                print msg['To']
                 smtp.sendmail(msg['From'], msg['To'], msg.as_string())
 
                 if output:
