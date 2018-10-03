@@ -116,9 +116,7 @@ class Sender():
         if self.opt.smtp_Port:
             smtp_Port = self.opt.smtp_Port
         if self.opt.require_tls:
-            print self.opt.require_tls.lower()
             if self.opt.require_tls.lower() == 'y':
-                print "require_tls is y"
                 require_tls = 1
         if self.opt.smtp_Username:
             smtp_user = self.opt.smtp_Username
@@ -202,7 +200,7 @@ class Sender():
 
         with open(body_File, 'r') as bodyfile:
             body = bodyfile.read()
-        with optn(subject_File, 'r') as subjectfile:
+        with open(subject_File, 'r') as subjectfile:
             subject = subjectfile.read()
 
         i = 0
