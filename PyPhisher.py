@@ -207,6 +207,7 @@ class Sender():
                 msg['Subject'] = subject
                 msg['From'] = faddr
                 msg['To'] = taddr
+                print msg['To']
 
                 if track is 1:
                     if log:
