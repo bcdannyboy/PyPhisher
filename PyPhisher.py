@@ -322,7 +322,7 @@ parser.add_option("-o", "--Output", dest="Output_File",
 parser.add_option("-L", "--Log", dest="Log_File",
                   help="Path to .txt log file", metavar="FILE")
 (options, args) = parser.parse_args()
-
+print options.Track_Path
 if str(options.Track_Email).lower() is "y" and not options.Track_Path and not options.Track_Domain:
     print "option -t requires option -R and option -d and vice versa"
     exit()
