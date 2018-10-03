@@ -45,9 +45,9 @@ class Sender():
 
     def generateTrackers(self, amt, apachepath):
         for i in range(0, amt):
-            command = "cp trackdot.gif " + os.path.join(apachepath, self.generateTrackID() + ".gif")
-            print command
-            call(command)
+            trackdotfile = os.getcwd() + "/trackdot.gif"
+            copyloc = os.path.join(apachepath, self.generateTrackID()) + ".gif"
+            call(["cp", trackdotfile, copyloc])
             #shutil.copystat(trackdot, os.path.join(apachepath,self.generateTrackID() + ".gif"))
 
     def generateTrackID(self):
