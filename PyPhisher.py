@@ -137,7 +137,9 @@ class Sender():
         if self.opt.Track_Email:
             track = 1
         if self.opt.Track_Path:
-            track_Path = self.opt.track_Path
+            print self.opt.Track_Path
+            track_Path = self.opt.Track_Path
+            print track_Path
         if self.opt.Track_Domain:
             track_Domain = self.opt.Track_Domain
         if self.opt.Track_Time:
