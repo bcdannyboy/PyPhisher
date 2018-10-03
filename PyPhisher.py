@@ -57,7 +57,7 @@ class Sender():
 
         hit = []
 
-        while datetime.datetime.now() != datetime.timedelta(tracktime)):
+        while datetime.datetime.now() != datetime.timedelta(tracktime):
             logfile = open(logfile, 'r')
             logfile.seek(0,2)
             line = logfile.readline()
