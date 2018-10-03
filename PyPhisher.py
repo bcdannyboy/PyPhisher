@@ -39,6 +39,8 @@ class Sender():
         self.OutputFile = ""
         self.LogFile = ""
 
+        self.trackerwait = 0
+
         self.SendMail()
 
 
@@ -142,6 +144,7 @@ class Sender():
             track_Domain = self.opt.Track_Domain
         if self.opt.Track_Time:
             tracktime = int(self.opt.Track_Time)
+            self.trackerwait = tracktime
         if self.opt.Apache_Log:
             apache_Log = self.opt.Apache_Log
             watchlog = 1
@@ -207,12 +210,11 @@ class Sender():
                 msg['Subject'] = subject
                 msg['From'] = faddr
                 msg['To'] = taddr
-                print msg['To']
 
                 if track is 1:
                     if log:
                         Writer.Log("Attaching tracking dot")
-                    print self.TrackerIDs[i]
+
                     body = str(body) + '<img src="' + str(track_Domain) + '/' + str(self.TrackerIDs[i]) + '.gif"/>'
 
                 if email_type is 1:
@@ -247,7 +249,6 @@ class Sender():
                 if log:
                     Writer.Log("Sending email to: " + msg['To'] + " from: " + msg['From'])
 
-                print msg['To']
                 smtp.sendmail(msg['From'], msg['To'], msg.as_string())
 
                 if output:
@@ -323,8 +324,6 @@ parser.add_option("-o", "--Output", dest="Output_File",
 parser.add_option("-L", "--Log", dest="Log_File",
                   help="Path to .txt log file", metavar="FILE")
 (options, args) = parser.parse_args()
-
-print options.to_Address
 
 if str(options.Track_Email).lower() is "y" and not options.Track_Path and not options.Track_Domain:
     print "option -t requires option -R and option -d and vice versa"
