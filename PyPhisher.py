@@ -93,7 +93,7 @@ class Sender():
         if self.opt.to_Address:
             to_Address = self.opt.to_Address
             singleto = 1
-        if self.opt.to_Name:
+        if self.opt.to_First:
             to_fname = self.opt.to_First
         if self.opt.to_Last:
             to_lname = self.opt.to_Last
