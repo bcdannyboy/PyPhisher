@@ -263,7 +263,7 @@ class Sender():
                     Writer.Output("Tracker Hit: " + hit)
 
 
-
+print "PyPhisher Version 1.0"
 usage = "usage: %prog [options]"
 parser = OptionParser(usage=usage)
 
