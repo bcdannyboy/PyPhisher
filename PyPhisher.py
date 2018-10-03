@@ -49,7 +49,7 @@ class Sender():
 
     def generateTrackID(self):
         id = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(8))
-        self.TrackerIDs.append([id,0])
+        self.TrackerIDs.append(id)
         return id
 
     def Track(self, tracktime):
