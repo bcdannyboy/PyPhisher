@@ -30,7 +30,6 @@ class Logger():
 class Sender():
     def __init__(self, options):
         self.opt = options
-        self.SendMail()
 
         self.TrackID = []
         self.ToAddress = []
@@ -73,6 +72,7 @@ class Sender():
         return hit
 
     def SendMail(self):
+        print self.ToAddress
         singleto = 0
         tofile = 0
 
