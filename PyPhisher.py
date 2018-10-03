@@ -116,7 +116,9 @@ class Sender():
         if self.opt.smtp_Port:
             smtp_Port = self.opt.smtp_Port
         if self.opt.require_tls:
-            if str(self.opt.require_tls).lower() is "y":
+            print self.opt.require_tls.lower()
+            if self.opt.require_tls.lower() is "y":
+                print "require_tls is y"
                 require_tls = 1
         if self.opt.smtp_Username:
             smtp_user = self.opt.smtp_Username
@@ -192,7 +194,7 @@ class Sender():
             smtp.starttls()
         else:
             print "nope!"
-            
+
         if log:
             Writer.Log("Logging in to SMTP")
 
