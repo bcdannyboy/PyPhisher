@@ -45,7 +45,7 @@ class Sender():
     def generateTrackers(self, amt, apachepath):
         for i in range(0, amt):
             trackdot = "trackdot.gif"
-            shutil.copy(trackdot, apachepath + self.generateTrackID() + ".gif")
+            shutil.copy(trackdot, os.path.join(apachepath,self.generateTrackID() + ".gif"))
 
     def generateTrackID(self):
         id = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(8))
