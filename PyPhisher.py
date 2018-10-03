@@ -5,6 +5,7 @@ import string
 import shutil
 import datetime
 import os
+from subprocess import call
 from os.path import basename
 from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
@@ -44,8 +45,10 @@ class Sender():
 
     def generateTrackers(self, amt, apachepath):
         for i in range(0, amt):
-            trackdot = "trackdot.gif"
-            shutil.copystat(trackdot, os.path.join(apachepath,self.generateTrackID() + ".gif"))
+            command = "cp trackdot.gif " + os.path.join(apachepath, self.generateTrackID() + ".gif")
+            print command
+            call(command)
+            #shutil.copystat(trackdot, os.path.join(apachepath,self.generateTrackID() + ".gif"))
 
     def generateTrackID(self):
         id = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(8))
