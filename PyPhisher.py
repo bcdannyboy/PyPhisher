@@ -32,7 +32,7 @@ class Sender():
     def __init__(self, options):
         self.opt = options
 
-        self.TrackID = []
+        self.TrackerIDs = []
         self.ToAddress = []
         self.FromAddress = []
 
