@@ -104,7 +104,7 @@ class Sender():
             singlefrom = 1
         if self.opt.from_First:
             from_fname = self.opt.from_First
-        if self.opt.from_Last
+        if self.opt.from_Last:
             from_lname = self.opt.from_Last
         if self.opt.from_File:
             from_File = self.opt.from_File
