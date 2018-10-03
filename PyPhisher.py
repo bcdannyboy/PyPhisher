@@ -71,6 +71,7 @@ class Sender():
                     if ID in line:
                         print "ID Hit: " + ID
                         hit.append(ID)
+            logfile.close()
 
         return hit
 
