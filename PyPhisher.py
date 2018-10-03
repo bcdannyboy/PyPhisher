@@ -188,8 +188,11 @@ class Sender():
         smtp = smtplib.SMTP(smtp_Server, smtp_Port)
 
         if require_tls is 1:
+            print "here!"
             smtp.starttls()
-
+        else:
+            print "nope!"
+            
         if log:
             Writer.Log("Logging in to SMTP")
 
