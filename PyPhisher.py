@@ -137,9 +137,7 @@ class Sender():
         if self.opt.Track_Email:
             track = 1
         if self.opt.Track_Path:
-            print self.opt.Track_Path
             track_Path = self.opt.Track_Path
-            print track_Path
         if self.opt.Track_Domain:
             track_Domain = self.opt.Track_Domain
         if self.opt.Track_Time:
@@ -307,7 +305,7 @@ parser.add_option("-H", "--header", dest="header_File",
 parser.add_option("-r", "--track", dest="Track_Email",
                   help="Track the email?", metavar="Y/N")
 parser.add_option("-R", "--trackpath", dest="Track_Path",
-                  help="Path to apache publichtml file", metavar="PATH")
+                  help="Path to apache public html directory", metavar="PATH")
 parser.add_option("-d", "--trackdomain", dest="Track_Domain",
                   help="Domain to host tracker on", metavar="EXAMPLE.COM")
 parser.add_option("-v", "--apachelog", dest="Apache_Log",
@@ -322,7 +320,7 @@ parser.add_option("-o", "--Output", dest="Output_File",
 parser.add_option("-L", "--Log", dest="Log_File",
                   help="Path to .txt log file", metavar="FILE")
 (options, args) = parser.parse_args()
-print options.Track_Path
+
 if str(options.Track_Email).lower() is "y" and not options.Track_Path and not options.Track_Domain:
     print "option -t requires option -R and option -d and vice versa"
     exit()
