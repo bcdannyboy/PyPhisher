@@ -52,7 +52,7 @@ class Sender():
         self.TrackID.append([id,0])
         return id
 
-    def Track(self, logfile, tracktime):
+    def Track(self, tracktime):
         time = datetime.datetime.now()
 
         hit = []
@@ -244,7 +244,7 @@ class Sender():
 
                 if log:
                     Writer.Log("Sending email to: " + msg['To'] + " from: " + msg['From'])
-                
+
                 smtp.sendmail(msg['From'], msg['To'], msg.as_string())
 
                 if output:
