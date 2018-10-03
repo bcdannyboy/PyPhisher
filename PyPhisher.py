@@ -38,8 +38,9 @@ class Sender():
 
         self.OutputFile = ""
         self.LogFile = ""
-        
+
         self.SendMail()
+
 
     def generateTrackers(self, amt, apachepath):
         for i in range(0, amt):
@@ -295,7 +296,7 @@ parser.add_option("-b", "--body", dest="body_File",
                   help="Body File", metavar="FILE")
 parser.add_option("-S", "--subject", dest="subject_File",
                   help="Subject File", metavar="FILE")
-parser.add_option("-h", "--header", dest="header_File",
+parser.add_option("-H", "--header", dest="header_File",
                   help="Additional Email Headers", metavar="FILE")
 
 parser.add_option("-r", "--track", dest="Track_Email",
@@ -306,7 +307,7 @@ parser.add_option("-d", "--trackdomain", dest="Track_Domain",
                   help="Domain to host tracker on", metavar="EXAMPLE.COM")
 parser.add_option("-v", "--apachelog", dest="Apache_Log",
                   help="Path to apache log file", metavar="FILE")
-parder.add_option("--tt", "--tracktime", dest="Track_Time",
+parser.add_option("--tt", "--tracktime", dest="Track_Time",
                   help="time to track apache log in minutes")
 
 parser.add_option("-a", "--attach", dest="attachment_file",
