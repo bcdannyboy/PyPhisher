@@ -124,7 +124,7 @@ class Sender():
             smtp_pass = self.opt.smtp_Password
 
         if self.opt.email_Type:
-            if str(self.opt.email_Type).lower() == "html":
+            if str(self.opt.email_Type).lower() == "plain":
                 email_type = 1
         if self.opt.body_File:
             body_File = self.opt.body_File
@@ -214,9 +214,9 @@ class Sender():
                     body = body + '<img src="' + track_Domain + '/' + self.TrackerIDs[i] + '.gif"/>'
 
                 if email_type is 1:
-                    body = MIMEText(body,"html")
-                else:
                     body = MIMEText(body,"plain")
+                else:
+                    body = MIMEText(body,"html")
 
                 if log:
                     Writer.Log("Attaching Body")
@@ -252,7 +252,8 @@ class Sender():
 
             i = i + 1
 
-            hits = self.Track(tracktime)
+            if track is 1:
+                hits = self.Track(tracktime)
 
             if output:
                 for hit in hits:
