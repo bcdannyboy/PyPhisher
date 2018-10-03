@@ -57,8 +57,6 @@ class Sender():
         return id
 
     def Track(self, logfile, tracktime):
-        time = datetime.datetime.now()
-
         hit = []
 
         while datetime.datetime.now() != datetime.timedelta(tracktime):
