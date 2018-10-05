@@ -172,7 +172,7 @@ class Sender():
             with open(to_File) as f:
                 lines = f.readlines()
 
-                for line in lines():
+                for line in lines:
                     self.ToAddress.append(line)
 
         if singlefrom is 1:
