@@ -217,9 +217,9 @@ class Sender():
                     body = str(body) + '<img src="' + str(track_Domain) + '/' + str(self.TrackerIDs[i]) + '.gif"/>'
 
                 if email_type is 1:
-                    body = MIMEText(body,"plain")
+                    body = MIMEText(body,'plain')
                 else:
-                    body = MIMEText(body,"html")
+                    body = MIMEText(body,'html')
 
                 if log:
                     Writer.Log("Attaching Body")
