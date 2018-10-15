@@ -51,8 +51,8 @@ class PyPhisher():
 
         self.TimesUp = 0
 
-        self.send()
-        hits = self.Track()
+        if(self.send() == 1):
+            hits = self.Track()
         self.Output(hits)
 
     def Output(self, hits):
@@ -242,7 +242,7 @@ class PyPhisher():
                         smtp.sendmail(msg['From'], msg['To'], msg.as_string())
                         self.Log.write("INFO", "Sent Email: " + str(emailindex))
                         print str(emailindex) + ": Sent To [ " + msg['To'] + "] From [" + msg['From'] + "]"
-
+        return 1
 print "PyPhisher Version 2.0"
 print "Daniel Bloom - Daniel@bcdefense.com | Daniel_Bloom@fanniemae.com"
 print "Twitter: @bcdannyboy"
