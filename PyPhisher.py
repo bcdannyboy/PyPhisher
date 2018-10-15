@@ -179,7 +179,7 @@ class PyPhisher():
                         for www in self.WWWPaths:
                             if www.split(":")[1] == domain:
                                 print "found tracker domain..."
-                                trackerid = generateTracker(www.split(":")[0])
+                                trackerid = self.generateTracker(www.split(":")[0])
                                 body = str(body) + '<img src="' + str(track_Domain) + '/' + trackerid + '.gif"/>'
                                 print body
                                 self.Log.write("INFO", "Added tracker (" + trackerid + ") to email " + str(emailindex))
