@@ -262,6 +262,7 @@ OutputPath = ""
 LogPath = ""
 BodyPath = []
 TrackPath = ""
+TrackTime = ""
 
 if not options.arg_ToFile or not options.arg_ConfigFile:
     parser.print_help()
@@ -272,11 +273,8 @@ else:
         lines = ConfigFile.readlines()
 
         for line in lines:
-            if line.startswith("#"):
-                print "!!!" + line
-                line = line
-            elif len(line) < 5:
-                print "~~~"
+            if line.startswith("#") or len(line) < 2:
+                continue;
             else:
                 print line + " | " + str(len(line))
                 split = line.split("=")
