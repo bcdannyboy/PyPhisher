@@ -201,9 +201,10 @@ class PyPhisher():
                         msg.attach(att)
                         self.Log.write("INFO", "Attached file " + tail + " to email " + str(emailindex))
 
-                        smtp.sendmail(msg['From'], msg['To'], msg.as_string())
-                        self.Log.write("INFO", "Sent Email: " + str(emailindex))
-                        print str(emailindex) + ": Sent To [ " + msg['To'] + "] From [" + msg['From'] + "]"
+                    print "sending message..."
+                    smtp.sendmail(msg['From'], msg['To'], msg.as_string())
+                    self.Log.write("INFO", "Sent Email: " + str(emailindex))
+                    print str(emailindex) + ": Sent To [ " + msg['To'] + "] From [" + msg['From'] + "]"
 
         print "done sending"
         return 1
