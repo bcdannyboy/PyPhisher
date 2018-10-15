@@ -285,10 +285,8 @@ else:
                     splitSMTP = option.split(":")
 
                     SMTP = splitSMTP[0].strip()
-                    print SMTP
                     try:
                         Port = int(splitSMTP[1].strip())
-                        print Port
                     except:
                         print "[ERROR]: Invalid Port"
                         exit()
@@ -297,41 +295,44 @@ else:
                     splitSMTP = option.split(":")
 
                     Username = splitSMTP[0]
-                    print Username
                     Password = splitSMTP[1]
-                    print Password
 
                 elif command == "RequireTLS":
                     if option == "TRUE":
                         RequireTLS = 1
                     else:
                         RequireTLS = 0
-                    print RequireTLS
 
                 elif command == "WWWPath":
                     WWWPath = option.split(",")
-                    print WWWPath
 
                 elif command ==  "OutPath":
                     OutputPath = option
-                    print OutputPath
 
                 elif command == "LogPath":
                     LogPath = option
-                    print LogPath
 
                 elif command == "BodyPath":
                     BodyPath = option.split(",")
-                    print BodyPath
 
                 elif command == "WebServerLog":
                     TrackPath = option
-                    print TrackPath
 
                 elif command == "TrackTime":
                     TrackTime = int(option)
-                    print TrackTime
 
 
+    print ToFile
+    print SMTP
+    print Port
+    print Username
+    print Password
+    print RequireTLS
+    print BodyPath
+    print WWWPath
+    print OutputPath
+    print LogPath
+    print TrackPath
+    print TrackTime
     PyPhisher = PyPhisher(ToFile, SMTP, Port, Username, Password, RequireTLS,
                           BodyPath, WWWPath, OutputPath, LogPath, TrackPath, TrackTime)
