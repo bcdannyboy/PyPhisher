@@ -129,10 +129,7 @@ class PyPhisher():
                     else:
                         body = body + line
 
-                print "ID: " + CampaignID.strip()
-                print "Type: " + str(bodytype).strip()
-                print "Body: " + body.strip()
-                bodies.append([CampaignID.strip(), bodytype.strip(), body.strip()])
+                bodies.append([CampaignID.strip(), bodytype, body.strip()])
 
         emailindex = 0
         with open(self.ToFilePath,"r") as ToFile:
