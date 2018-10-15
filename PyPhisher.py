@@ -177,6 +177,7 @@ class PyPhisher():
                         bodytype = "html"
                         trackerid = ""
                         for www in self.WWWPaths:
+                            print www.split(":")
                             if www.split(":")[1] == domain:
                                 foundit = foundit + 1
                                 print "found tracker domain..."
