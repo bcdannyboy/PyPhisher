@@ -209,7 +209,7 @@ class PyPhisher():
                                 self.Log.write("INFO", "Added tracker (" + trackerid + ") to email " + str(emailindex))
 
                         if len(trackerid) < 1: # Default to the first path in the list
-                            trackerid = generateTracker(self.WWWPaths[0].split(":")[0])
+                            trackerid = self.generateTracker(self.WWWPaths[0].split(":")[0])
 
                     else:
                         if type == 1:
