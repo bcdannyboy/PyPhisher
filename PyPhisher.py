@@ -171,7 +171,7 @@ class PyPhisher():
                     body = str(body).replace("{{From_Name}}", From_Name)
                     body = str(body).replace("{{From_Address}}", From_Address)
                     self.Log.write("INFO", "Replaced body commands with variables for email " + str(emailindex))
-
+                    print "set up body"
                     if track.lower() == "y":
                         bodytype = "html"
                         trackerid = ""
@@ -185,7 +185,9 @@ class PyPhisher():
                         if len(trackerid) < 1: # Default to the first path in the list
                             trackerid = self.generateTracker(self.WWWPaths[0].split(":")[0])
 
+                        print "tracker added"
                     body = MIMEText(body,bodytype)
+                    print "body made"
                     msg.attach(body)
                     self.Log.write("INFO", "Attached body of type " + bodytype + " to email " + str(emailindex))
 
