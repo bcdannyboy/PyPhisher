@@ -276,6 +276,7 @@ else:
             if line.startswith("#") or not line:
                 continue;
             else:
+                print line
                 split = line.split("=")
                 command = line[0].strip()
                 option = line[1].strip()
