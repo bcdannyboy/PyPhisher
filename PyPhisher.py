@@ -272,7 +272,8 @@ else:
         lines = ConfigFile.readlines()
 
         for line in lines:
-            if line.startswith("#") or len(line) < 1:
+            print line
+            if line.startswith("#") or not line:
                 continue;
             else:
                 split = line.split("=")
