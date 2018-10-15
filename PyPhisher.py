@@ -71,7 +71,7 @@ class PyPhisher():
     def Track(self):
         self.Log.write("INFO", "Tracking web log: " + self.TrackPath)
         hit = []
-        thread.start_new_thread(self.Timer)
+        thread.start_new_thread(self.Timer, ())
         weblog = open(self.TrackPath,'r')
         while self.TimesUp == 0:
             weblog.seek(0,2)
