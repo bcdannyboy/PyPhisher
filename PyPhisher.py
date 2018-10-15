@@ -278,7 +278,7 @@ else:
             elif len(line) < 1:
                 print "~~~"
             else:
-                print line
+                print line + " | " + str(len(line))
                 split = line.split("=")
                 command = line[0].strip()
                 option = line[1].strip()
