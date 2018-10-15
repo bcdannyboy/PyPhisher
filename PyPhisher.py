@@ -135,9 +135,9 @@ class PyPhisher():
         with open(self.ToFilePath,"r") as ToFile:
             self.Log.write("INFO","Reading ToFile...")
             lines = ToFile.readlines()
-
+            smtp = ''
             try:
-                smtplib.SMTP(self.SMTPServer,self.SMTPPort)
+                smtp = smtplib.SMTP(self.SMTPServer,self.SMTPPort)
                 self.Log.write("INFO","Connected to SMTP Server: " + self.SMTPServer + ":" + str(self.SMTPPort))
             except:
                 self.Log.write("ERROR", "Unable to connect to SMTP Server: " + self.SMTPServer + ":" + str(self.SMTPPort))
