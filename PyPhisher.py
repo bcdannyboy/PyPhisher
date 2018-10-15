@@ -191,9 +191,8 @@ class PyPhisher():
                     msg.attach(body)
                     self.Log.write("INFO", "Attached body of type " + bodytype + " to email " + str(emailindex))
 
-                    if attachmentpath.lower() == "na":
-                        continue;
-                    else:
+                    if attachmentpath.lower() != "na":
+                        print "adding attachment
                         att = MIMEBase('application',"octet-stream")
                         att.set_payload(open(attachmentpath,"rb").read())
                         Encoders.encode_base64(att)
