@@ -50,7 +50,7 @@ class PyPhisher():
         self.TimesUp = 0
 
         if(self.send() == 1):
-            print "tracking..."
+            print "Tracking..."
             hits = self.Track()
         self.Output(hits)
 
@@ -133,7 +133,6 @@ class PyPhisher():
                 if line.startswith("#") or len(line) < 1:
                     continue;
                 else:
-                    print "preparing email..."
                     emailindex = emailindex + 1
                     split = line.split(",")
                     To_FirstName = split[0]
@@ -170,30 +169,23 @@ class PyPhisher():
                     body = str(body).replace("{{From_Name}}", From_Name)
                     body = str(body).replace("{{From_Address}}", From_Address)
                     self.Log.write("INFO", "Replaced body commands with variables for email " + str(emailindex))
-                    print "set up body"
                     if track.lower() == "y":
-                        print "adding tracker..."
                         bodytype = "html"
                         trackerid = ""
                         for www in self.WWWPaths:
                             if www.split(":")[1] == domain:
-                                print "found tracker domain..."
                                 trackerid = self.generateTracker(www.split(":")[0])
                                 body = str(body) + '<img src="http://' + str(domain) + '/' + trackerid + '.gif"/>'
-                                print body
                                 self.Log.write("INFO", "Added tracker (" + trackerid + ") to email " + str(emailindex))
 
                         if len(trackerid) < 1: # Default to the first path in the list
                             trackerid = self.generateTracker(self.WWWPaths[0].split(":")[0])
 
-                        print "tracker added"
                     body = MIMEText(body,bodytype)
-                    print "body made"
                     msg.attach(body)
                     self.Log.write("INFO", "Attached body of type " + bodytype + " to email " + str(emailindex))
 
                     if attachmentpath.lower() != "na":
-                        print "adding attachment"
                         att = MIMEBase('application',"octet-stream")
                         att.set_payload(open(attachmentpath,"rb").read())
                         Encoders.encode_base64(att)
@@ -203,12 +195,10 @@ class PyPhisher():
                         msg.attach(att)
                         self.Log.write("INFO", "Attached file " + tail + " to email " + str(emailindex))
 
-                    print "sending message..."
                     smtp.sendmail(msg['From'], msg['To'], msg.as_string())
                     self.Log.write("INFO", "Sent Email: " + str(emailindex))
                     print str(emailindex) + ": Sent To [ " + msg['To'] + "] From [" + msg['From'] + "]"
 
-        print "done sending"
         return 1
 print "PyPhisher Version 2.0"
 print "Daniel Bloom - Daniel@bcdefense.com | Daniel_Bloom@fanniemae.com"
