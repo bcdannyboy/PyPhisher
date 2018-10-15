@@ -184,7 +184,7 @@ class PyPhisher():
                     type = bodies[1]
                     body = bodies[2]
 
-                    self.OutputMessages.append("TO " + msg['To'] + " | FROM " + msg['From'] + " | CampaignID " + campaignid)
+                    self.OutputMessages.append("TO " + str(msg['To']) + " | FROM " + str(msg['From']) + " | CampaignID " + str(campaignid))
 
                     body = body.replace("{{To_FirstName}}", To_FirstName)
                     body = body.replace("{{To_LastName}}", To_LastName)
