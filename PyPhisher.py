@@ -273,6 +273,7 @@ else:
 
         for line in lines:
             if line.startswith("#") or not line:
+                print "!!!" + line
                 line = line
             else:
                 print line
