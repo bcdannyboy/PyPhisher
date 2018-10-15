@@ -128,7 +128,7 @@ class PyPhisher():
                                 CampaignID = lineitem[1]
 
                     body = body + line
-                    bodies.append(CampaignID, bodytype, body)
+                    bodies.append([CampaignID, bodytype, body])
 
         emailindex = 0
         with open(self.ToFilePath,"r") as ToFile:
@@ -280,7 +280,6 @@ else:
                 split = line.split("=")
                 command = split[0].strip()
                 option = split[1].strip()
-                print command + " | " + option
 
                 if command == "SMTP":
                     splitSMTP = option.split(":")
