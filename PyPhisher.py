@@ -277,10 +277,10 @@ else:
             if line.startswith("#") or len(line) < 2:
                 continue;
             else:
-                print line
                 split = line.split("=")
                 command = line[0].strip()
                 option = line[1].strip()
+                print command + " | " + option
 
                 if command == "SMTP":
                     splitSMTP = option.split(":")
