@@ -183,15 +183,16 @@ class PyPhisher():
                     campaignid = bodies[0]
                     type = bodies[1]
                     body = bodies[2]
+                    print body
 
                     self.OutputMessages.append("TO " + str(msg['To']) + " | FROM " + str(msg['From']) + " | CampaignID " + str(campaignid))
 
-                    body = body.replace("{{To_FirstName}}", To_FirstName)
-                    body = body.replace("{{To_LastName}}", To_LastName)
-                    body = body.replace("{{To_Title}}", To_Title)
-                    body = body.replace("{{ToAddress}}", ToAddress)
-                    body = body.replace("{{From_Name}}", From_Name)
-                    body = body.replace("{{From_Address}}", From_Address)
+                    body = str(body).replace("{{To_FirstName}}", To_FirstName)
+                    body = str(body).replace("{{To_LastName}}", To_LastName)
+                    body = str(body).replace("{{To_Title}}", To_Title)
+                    body = str(body).replace("{{ToAddress}}", ToAddress)
+                    body = str(body).replace("{{From_Name}}", From_Name)
+                    body = str(body).replace("{{From_Address}}", From_Address)
                     self.Log.write("INFO", "Replaced body commands with variables for email " + str(emailindex))
 
                     bodytype = ""
