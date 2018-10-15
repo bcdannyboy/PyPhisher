@@ -218,14 +218,14 @@ class PyPhisher():
                             bodytype = "plain"
 
 
-                    body = MIMETEXT(body,bodytype)
+                    body = MIMEText(body,bodytype)
                     msg.attach(body)
                     self.Log.write("INFO", "Attached body of type " + bodytype + " to email " + str(emailindex))
 
                     if attachmentpath.lower() == "na":
                         continue;
                     else:
-                        att = MIMEBASE('application',"octet-stream")
+                        att = MIMEBase('application',"octet-stream")
                         att.set_payload(open(attachmentpath,"rb").read())
                         Encoders.encode_base64(att)
                         head, tail = os.path.split(attachmentpath)
