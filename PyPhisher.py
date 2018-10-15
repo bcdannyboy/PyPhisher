@@ -129,10 +129,10 @@ class PyPhisher():
                     else:
                         body = body + line
 
-                print "ID: " + CampaignID
-                print "Type: " + str(bodytype)
-                print "Body: " + body
-                bodies.append([CampaignID, bodytype, body])
+                print "ID: " + CampaignID.strip()
+                print "Type: " + str(bodytype).strip()
+                print "Body: " + body.strip()
+                bodies.append([CampaignID.strip(), bodytype.strip(), body.strip()])
 
         emailindex = 0
         with open(self.ToFilePath,"r") as ToFile:
@@ -184,16 +184,12 @@ class PyPhisher():
                     msg['From'] = From_Name + "<" + From_Address + ">"
                     msg['To'] = To_FirstName + " " + To_LastName + "<" + ToAddress + ">"
 
-                    print "\n\n"
-                    print bodies
-                    print "\n\n"
-                    campaignid = bodies[0]
-                    type = bodies[1]
-                    body = bodies[2]
-                    print "\n"
-                    print body
+                    for bodyitem in bodies:
+                        if bodyitem[0] == campaignID:
+                            type = bodyitem[1]
+                            body = bodyitem[2]
 
-                    self.OutputMessages.append("TO " + str(msg['To']) + " | FROM " + str(msg['From']) + " | CampaignID " + str(campaignid))
+                    self.OutputMessages.append("TO " + str(msg['To']) + " | FROM " + str(msg['From']) + " | CampaignID " + str(campaignID))
 
                     body = str(body).replace("{{To_FirstName}}", To_FirstName)
                     body = str(body).replace("{{To_LastName}}", To_LastName)
