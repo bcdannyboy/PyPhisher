@@ -272,7 +272,7 @@ else:
         lines = ConfigFile.readlines()
 
         for line in lines:
-            if line.startswith("#")
+            if line.startswith("#"):
                 print "!!!" + line
                 line = line
             elif len(line) < 1:
