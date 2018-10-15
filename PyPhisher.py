@@ -179,7 +179,7 @@ class PyPhisher():
                             if www.split(":")[1] == domain:
                                 foundit = foundit + 1
                                 trackerid = generateTracker(www.split(":")[0])
-                                body = str(body) + str(track_Domain) + '/' + trackerid + '.gif"/>'
+                                body = str(body) + '<img src="' + str(track_Domain) + '/' + trackerid + '.gif"/>'
                                 self.Log.write("INFO", "Added tracker (" + trackerid + ") to email " + str(emailindex))
 
                         if len(trackerid) < 1: # Default to the first path in the list
