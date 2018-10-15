@@ -173,11 +173,13 @@ class PyPhisher():
                     self.Log.write("INFO", "Replaced body commands with variables for email " + str(emailindex))
                     print "set up body"
                     if track.lower() == "y":
+                        print "adding tracker..."
                         bodytype = "html"
                         trackerid = ""
                         for www in self.WWWPaths:
                             if www.split(":")[1] == domain:
                                 foundit = foundit + 1
+                                print "found tracker domain..."
                                 trackerid = generateTracker(www.split(":")[0])
                                 body = str(body) + '<img src="' + str(track_Domain) + '/' + trackerid + '.gif"/>'
                                 self.Log.write("INFO", "Added tracker (" + trackerid + ") to email " + str(emailindex))
