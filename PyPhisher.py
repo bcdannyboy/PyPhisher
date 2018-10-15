@@ -19,11 +19,11 @@ from email.utils import COMMASPACE, formatdate
 class Logger():
     def __init__(self, logpath):
         self.ClassName = "Logger"
-        self.logpath = logpath
+        self.Logpath = logpath
 
     def write(self, level, message):
         logstring = str(datetime.datetime.now()) + "," + level + "," + message + "\n"
-        file = open(self.logpath,"w+")
+        file = open(self.Logpath,"w+")
         file.write(logstring)
 
 class PyPhisher():
@@ -119,7 +119,6 @@ class PyPhisher():
                         lineitem = linesplit[1]
 
                         if lineitem.startswith("TYPE") or lineitem.startswith("CAMPAIGN"):
-                            print lineitem
                             lineitem = lineitem.split("=")
                             if lineitem[1].lower() == "html":
                                 bodytype = 1
@@ -146,16 +145,16 @@ class PyPhisher():
             if self.RequireTLS is 1:
                 try:
                     smtp.starttls()
-                    self.log.write("INFO","TLS Initiated...")
+                    self.Log.write("INFO","TLS Initiated...")
                 except:
-                    self.log.write("ERROR", "Unable to initiate TLS")
+                    self.Log.write("ERROR", "Unable to initiate TLS")
                     print "[ERROR] Unable to initiate TLS"
 
             try:
                 smtp.login(self.SMTPUsername, self.SMTPPassword)
-                self.log.write("INFO", "Logged into SMTP Server")
+                self.Log.write("INFO", "Logged into SMTP Server")
             except:
-                self.log.write("ERROR", "Unable to login to SMTP Server")
+                self.Log.write("ERROR", "Unable to login to SMTP Server")
                 print "[ERROR] Unable to login to SMTP Server"
 
             for line in lines:
