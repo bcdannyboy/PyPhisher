@@ -275,7 +275,7 @@ else:
             if line.startswith("#"):
                 print "!!!" + line
                 line = line
-            elif len(line) < 1:
+            elif len(line) < 5:
                 print "~~~"
             else:
                 print line + " | " + str(len(line))
