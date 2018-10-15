@@ -75,7 +75,6 @@ class PyPhisher():
         thread.start_new_thread(self.Timer, ())
         weblog = open(self.TrackPath,'r')
         while self.TimesUp == 0:
-            weblog.seek(0,2)
             line = weblog.readline()
             if not line:
                 time.sleep(0.1)
@@ -180,7 +179,7 @@ class PyPhisher():
                             if www.split(":")[1] == domain:
                                 print "found tracker domain..."
                                 trackerid = self.generateTracker(www.split(":")[0])
-                                body = str(body) + '<img src="' + str(domain) + '/' + trackerid + '.gif"/>'
+                                body = str(body) + '<img src="http://' + str(domain) + '/' + trackerid + '.gif"/>'
                                 print body
                                 self.Log.write("INFO", "Added tracker (" + trackerid + ") to email " + str(emailindex))
 
