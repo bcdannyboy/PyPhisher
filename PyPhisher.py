@@ -252,22 +252,23 @@ parser.add_option("-c", "--config", dest="arg_ConfigFile",
                   metavar="/Path/To/PyPhisher.config", help="Config File Path")
 (options, args) = parser.parse_args()
 
-SMTP = ""
-Port = 25
-Username = ""
-Password = ""
-RequireTLS = 0
-WWWPath = []
-OutputPath = ""
-LogPath = ""
-BodyPath = []
-TrackPath = ""
-TrackTime = ""
 
 if not options.arg_ToFile or not options.arg_ConfigFile:
     parser.print_help()
     exit()
 else:
+    SMTP = ""
+    Port = 25
+    Username = ""
+    Password = ""
+    RequireTLS = 0
+    WWWPath = []
+    OutputPath = ""
+    LogPath = ""
+    BodyPath = []
+    TrackPath = ""
+    TrackTime = ""
+
     ToFile = options.arg_ToFile
     with open(options.arg_ConfigFile,"r") as ConfigFile:
         lines = ConfigFile.readlines()
@@ -332,5 +333,5 @@ else:
                     print TrackTime
 
 
-PyPhisher = PyPhisher(ToFile, SMTP, Port, Username, Password, RequireTLS,
-                      BodyPath, WWWPath, OutputPath, LogPath, TrackPath, TrackTime)
+    PyPhisher = PyPhisher(ToFile, SMTP, Port, Username, Password, RequireTLS,
+                          BodyPath, WWWPath, OutputPath, LogPath, TrackPath, TrackTime)
