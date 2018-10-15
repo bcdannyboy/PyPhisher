@@ -181,6 +181,8 @@ class PyPhisher():
                     msg['From'] = From_Name + "<" + From_Address + ">"
                     msg['To'] = To_FirstName + " " + To_LastName + "<" + ToAddress + ">"
 
+                    type = 1
+                    body = ""
                     for bodyitem in bodies:
                         if bodyitem[0] == campaignID:
                             type = bodyitem[1]
