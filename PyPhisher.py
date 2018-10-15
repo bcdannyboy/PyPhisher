@@ -119,6 +119,7 @@ class PyPhisher():
                         lineitem = linesplit[1]
 
                         if lineitem.startswith("TYPE") or lineitem.startswith("CAMPAIGN"):
+                            print lineitem
                             lineitem = lineitem.split("=")
                             if lineitem[1].lower() == "html":
                                 bodytype = 1
@@ -321,18 +322,5 @@ else:
                 elif command == "TrackTime":
                     TrackTime = int(option)
 
-
-    print ToFile
-    print SMTP
-    print Port
-    print Username
-    print Password
-    print RequireTLS
-    print BodyPath
-    print WWWPath
-    print OutputPath
-    print LogPath
-    print TrackPath
-    print TrackTime
     PyPhisher = PyPhisher(ToFile, SMTP, Port, Username, Password, RequireTLS,
                           BodyPath, WWWPath, OutputPath, LogPath, TrackPath, TrackTime)
