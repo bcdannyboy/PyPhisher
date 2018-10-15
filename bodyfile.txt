@@ -2,7 +2,7 @@
 !#~Change the following line to TYPE=HTML (html) or TYPE=PLAIN (plaintext)
 !#~TYPE=PLAIN
 !#~Change the following line to CAMPAIGN=<campaign identifier>
-!#~CAMPAIGN=CMPNT
+!#~CAMPAIGN=CMPNT 
 Dear {{To_Title}}{{To_LastName}},
 
 ... rest of email ...
