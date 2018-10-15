@@ -27,7 +27,7 @@ class Logger():
         file.write(logstring)
 
 class PyPhisher():
-    def __init__(self, ToFilePath, SMTPServer, SMTPPort, SMTPUsername, SMTPPassword, RequireTLS, BodyPath, WWWPath, OutputPath, LogPath, TrackPath, TrackTime):
+    def __init__(self, ToFilePath, SMTPServer, SMTPPort, SMTPUsername, SMTPPassword, RequireTLS , WWWPath, OutputPath, LogPath, TrackPath, TrackTime):
         self.Version = "2.0"
         self.ToFilePath = ToFilePath
 
@@ -36,8 +36,6 @@ class PyPhisher():
         self.SMTPUsername = SMTPUsername
         self.SMTPPassword = SMTPPassword
         self.RequireTLS = RequireTLS
-
-        self.BodyPath = BodyPath
 
         self.WWWPaths = WWWPath
 
@@ -104,35 +102,6 @@ class PyPhisher():
     def send(self):
         self.Log.write("INFO","PyPhisher 2.0 Started...")
 
-        bodies = []
-
-        for body in self.BodyPath:
-            with open(body,"r") as BodyFile:
-                lines = BodyFile.readlines()
-
-                bodytype = 1 # 1 = html, 0 = plaintext
-                CampaignID = ""
-                body = ""
-
-                for line in lines:
-                    if line.startswith("!#~"):
-
-                        linesplit = line.split("!#~")
-                        lineitem = linesplit[1]
-
-                        if lineitem.startswith("TYPE") or lineitem.startswith("CAMPAIGN"):
-                            lineitem = lineitem.split("=")
-                            if lineitem[1].lower() == "html":
-                                bodytype = 1
-                            elif lineitem[1].lower() == "plain":
-                                bodytype = 0
-                            else:
-                                CampaignID = lineitem[1]
-                    else:
-                        body = body + line
-
-                bodies.append([CampaignID.strip(), bodytype, body.strip()])
-
         emailindex = 0
         with open(self.ToFilePath,"r") as ToFile:
             self.Log.write("INFO","Reading ToFile...")
@@ -164,7 +133,6 @@ class PyPhisher():
                 if line.startswith("#") or len(line) < 1:
                     continue;
                 else:
-                    print line
                     emailindex = emailindex + 1
                     split = line.split(",")
                     To_FirstName = split[0]
@@ -174,10 +142,12 @@ class PyPhisher():
                     From_Name = split[4]
                     From_Address = split[5]
                     Subject = split[6]
-                    attachmentpath = split[7]
-                    track = split[8]
-                    domain = split[9]
-                    campaignID = split[10]
+                    bodyfile = split[7]
+                    bodytype = split[8].lower()
+                    attachmentpath = split[9]
+                    track = split[10]
+                    domain = split[11]
+                    campaignID = split[12]
 
                     msg = MIMEMultipart('alternative')
                     msg['Subject'] = Subject
@@ -186,10 +156,9 @@ class PyPhisher():
 
                     type = 1
                     body = ""
-                    for bodyitem in bodies:
-                        if bodyitem[0] == campaignID:
-                            type = bodyitem[1]
-                            body = bodyitem[2]
+
+                    with open(bodyfile, 'r') as bf:
+                        body = bf.read()
 
                     self.OutputMessages.append("TO " + str(msg['To']) + " | FROM " + str(msg['From']) + " | CampaignID " + str(campaignID))
 
@@ -200,8 +169,6 @@ class PyPhisher():
                     body = str(body).replace("{{From_Name}}", From_Name)
                     body = str(body).replace("{{From_Address}}", From_Address)
                     self.Log.write("INFO", "Replaced body commands with variables for email " + str(emailindex))
-
-                    bodytype = ""
 
                     if track.lower() == "y":
                         bodytype = "html"
@@ -215,13 +182,6 @@ class PyPhisher():
 
                         if len(trackerid) < 1: # Default to the first path in the list
                             trackerid = self.generateTracker(self.WWWPaths[0].split(":")[0])
-
-                    else:
-                        if type == 1:
-                            bodytype = "html"
-                        else:
-                            bodytype = "plain"
-
 
                     body = MIMEText(body,bodytype)
                     msg.attach(body)
@@ -268,7 +228,6 @@ else:
     WWWPath = []
     OutputPath = ""
     LogPath = ""
-    BodyPath = []
     TrackPath = ""
     TrackTime = ""
 
@@ -315,9 +274,6 @@ else:
                 elif command == "LogPath":
                     LogPath = option
 
-                elif command == "BodyPath":
-                    BodyPath = option.split(",")
-
                 elif command == "WebServerLog":
                     TrackPath = option
 
@@ -325,4 +281,4 @@ else:
                     TrackTime = int(option)
 
     PyPhisher = PyPhisher(ToFile, SMTP, Port, Username, Password, RequireTLS,
-                          BodyPath, WWWPath, OutputPath, LogPath, TrackPath, TrackTime)
+                          WWWPath, OutputPath, LogPath, TrackPath, TrackTime)
