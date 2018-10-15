@@ -272,9 +272,11 @@ else:
         lines = ConfigFile.readlines()
 
         for line in lines:
-            if line.startswith("#") or not line:
+            if line.startswith("#")
                 print "!!!" + line
                 line = line
+            elif len(line) < 1:
+                print "~~~"
             else:
                 print line
                 split = line.split("=")
