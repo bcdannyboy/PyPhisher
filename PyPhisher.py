@@ -129,6 +129,9 @@ class PyPhisher():
                     else:
                         body = body + line
 
+                print "ID: " + CampaignID
+                print "Type: " + bodytype
+                print "Body: " + body
                 bodies.append([CampaignID, bodytype, body])
 
         emailindex = 0
@@ -181,7 +184,9 @@ class PyPhisher():
                     msg['From'] = From_Name + "<" + From_Address + ">"
                     msg['To'] = To_FirstName + " " + To_LastName + "<" + ToAddress + ">"
 
+                    print "\n\n"
                     print bodies
+                    print "\n\n"
                     campaignid = bodies[0]
                     type = bodies[1]
                     body = bodies[2]
