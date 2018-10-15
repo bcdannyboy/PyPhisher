@@ -128,7 +128,8 @@ class PyPhisher():
                                 CampaignID = lineitem[1]
                     else:
                         body = body + line
-                    bodies.append([CampaignID, bodytype, body])
+
+                bodies.append([CampaignID, bodytype, body])
 
         emailindex = 0
         with open(self.ToFilePath,"r") as ToFile:
