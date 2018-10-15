@@ -1,3 +1,5 @@
-# To_FirstName ,To_LastName, To_Title, ToAddress, From_Name, From_Address, Subject, path to attachment ("NA" if no attachment), track (Y/N), Domain, campaignID
-John,Smith,Mr.,john@smith.com,Announcements,Announcements@badsite.com,Big Announcement!,NA,Y,badsite.com,CMPNH
-Joe,Shmoe,Mr.,joe@shmoe.com,Big News,BigNews@badsite.com,Big News!,/path/to/file,Y,badsite.com,CMPNT
+# To_FirstName ,To_LastName, To_Title, ToAddress, From_Name, From_Address, Subject, bodyfile, bodytype, path to attachment ("NA" if no attachment), track (Y/N), Domain, campaignID
+To_FirstName ,To_LastName, To_Title, ToAddress, From_Name, From_Address, Subject, bodyfile, bodytype, path to attachment ("NA" if no attachment), track (Y/N), Domain, campaignID
+
+John,Smith,Mr.,john@smith.com,Announcements,Announcements@badsite.com,Big Announcement!, bodyfile.html, NA,Y,badsite.com,CMPNH
+Joe,Shmoe,Mr.,joe@shmoe.com,Big News,BigNews@badsite.com,Big News!, bodyfile.txt, /path/to/file,Y,badsite.com,CMPNT
