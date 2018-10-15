@@ -130,7 +130,7 @@ class PyPhisher():
                         body = body + line
 
                 print "ID: " + CampaignID
-                print "Type: " + bodytype
+                print "Type: " + str(bodytype)
                 print "Body: " + body
                 bodies.append([CampaignID, bodytype, body])
 
