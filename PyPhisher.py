@@ -164,6 +164,7 @@ class PyPhisher():
                 if line.startswith("#") or len(line) < 1:
                     continue;
                 else:
+                    print line
                     emailindex = emailindex + 1
                     split = line.split(",")
                     To_FirstName = split[0]
