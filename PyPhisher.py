@@ -278,8 +278,8 @@ else:
                 continue;
             else:
                 split = line.split("=")
-                command = line[0].strip()
-                option = line[1].strip()
+                command = split[0].strip()
+                option = split[1].strip()
                 print command + " | " + option
 
                 if command == "SMTP":
